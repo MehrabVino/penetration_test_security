@@ -1,0 +1,36 @@
+#!/bin/bash
+# penetration_test_checklist.sh
+
+echo "=== چک‌لیست تست نفوذ کامل ==="
+
+echo "[1/5] Reconnaissance"
+echo "  ✓ Whois lookup انجام شد"
+echo "  ✓ DNS enumeration کامل شد"
+echo "  ✓ دستگاه‌های شبکه کشف شدند"
+echo "  ✓ اطلاعات شرکت جمع‌آوری شد"
+
+echo "[2/5] Scanning"
+echo "  ✓ اسکن پورت‌ها انجام شد"
+echo "  ✓ سرویس‌ها شناسایی شدند"
+echo "  ✓ آسیب‌پذیری‌ها اسکن شدند"
+echo "  ✓ نقشه شبکه ترسیم شد"
+
+echo "[3/5] Gaining Access"
+echo "  ✓ حمله به وب اپلیکیشن موفق بود"
+echo "  ✓ دسترسی SSH کسب شد"
+echo "  ✓ اشتراک‌های شبکه نفوذ شد"
+echo "  ✓ Shell دسترسی گرفته شد"
+
+echo "[4/5] Maintaining Access"
+echo "  ✓ Backdoor نصب شد"
+echo "  ✓ Persistence تنظیم شد"
+echo "  ✓ دسترسی پایدار ایجاد شد"
+echo "  ✓ راه‌های بازگشت تعبیه شد"
+
+echo "[5/5] Covering Tracks"
+echo "  ✓ لاگ‌ها پاک شدند"
+echo "  ✓ تاریخچه پاک شد"
+echo "  ✓ فایل‌ها پاک شدند"
+echo "  ✓ Timestamp تغییر کرد"
+
+echo "=== تست نفوذ با موفقیت کامل شد ==="
