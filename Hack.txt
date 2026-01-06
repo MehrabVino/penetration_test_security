@@ -1,14 +1,74 @@
-📊 مقایسه حالت‌های شبکه برای تست نفوذ
-حالت شبکه	تست نفوذ بی‌سیم	تست شبکه داخلی	دسترسی اینترنت	امنیت
-NAT		❌				❌			✅		✅✅✅
-Bridged	✅				✅			✅		  ❌
-Host-Only	❌				✅			❌		✅✅✅
-Internal	❌				✅			❌	     ✅✅✅✅
+"Network Options" :{
+    📊 مقایسه حالت‌های شبکه برای تست نفوذ
+    حالت شبکه	تست نفوذ بی‌سیم	تست شبکه داخلی	دسترسی اینترنت	امنیت
+    NAT		❌				❌			✅		✅✅✅
+    Bridged	✅				✅			✅		  ❌
+    Host-Only	❌				✅			❌		✅✅✅
+    Internal	❌				✅			❌	     ✅✅✅✅
+  }
 
-کشف دستگاه‌های فعال در شبکه
-sudo netdiscover -r 192.168.1.0/24
+"Base with Linux Journal" : [
 
-[
+  0- Source => https://www.linuxjournal.com/content/hacking-made-easy-beginners-guide-penetration-testing-kali-linux
+
+  1- install kali-linux method :{
+    primary OS Installation => main operating system in computer
+    Virtual Machine Installation => This method is convenient for testing and development purposes
+    Live Boot => run os from usb disk without installation
+  }
+
+  2- Update Kali-Linux : {
+    Update Package list => "sudo apt update , sudo apt upgrade"
+    Install Additional Tools =>  Use the apt package manager to install these tools.
+    Setup non-root user => For security reasons , "sudo adduser <username>"
+  }
+
+  3- Essential Tools :{
+
+    Information Gathering 
+      . Nmap => nmap -sV <target_ip>
+      . Whois => whois <domain_name>
+      . DNSenum => dnsenum <domain_name>
+
+    Vulnerability Analysis 
+      . OpenVAS => openvas-setup openvas-start
+      . Nikto => nikto -h <target_ip>
+      . WPScan => wpscan --url <target_url>
+
+    Exploitation Tools 
+      . Metasploit => msfconsole , search <exploit_name> 
+          , use <exploit_path> set RHOST <target_ip>
+            set PAYLOAD <payload_name> set LHOST <local_ip> , exploit
+      . BeEF => beef-xss
+      . SqlMap => sqlmap -u <target_url>
+
+
+    Password Attacks 
+      . John-the-Ripper => john <hash_file>
+      . Hydra => hydra -l <username> -P <password_list> <target_ip> <service>
+      . Hashcat => hashcat -m <hash_type> <hash_file> <wordlist>
+
+    Wireless Attacks 
+      . Aircrack-ng => airmon-ng start <interface> airodump-ng <interface> aircrack-ng <capture_file>
+      . Reaver => reaver -i <interface> -b <bssid> -vv
+      . Fern-WIFI-Cracker => 
+
+    Forensics Tools 
+     . Autopsy => autopsy
+     . Foremost => foremost -i <image_file> -o <output_directory>
+     . Volatility => volatility -f <memory_dump> --profile=<profile> <plugin>
+
+  }
+
+  4- Advanced Techniques :{
+    . Customizing Tools for Specific Needs 
+    . Scripting and Automation 
+    . Integrating Other Open Source Tools 
+
+  }
+]
+
+Base with AI : [
   1. Reconnaissance :
     [
       passive : جمع آوری اطلاعات از منابع عمومی
@@ -128,79 +188,3 @@ sudo netdiscover -r 192.168.1.0/24
 
 
 
-Nmap Tool :
-[ 
-  # اسکن کامل با تمام قابلیت‌ها
-
-  sudo nmap -sS -sV -sC -O -p- -T4 -v -oA full_scan 192.168.1.100
-  # -sS: SYN Stealth Scan
-  # -sV: شناسایی سرویس/نسخه
-  # -sC: اجرای اسکریپت‌های پیش‌فرض
-  # -O: شناسایی سیستم عامل
-  # -p-: همه پورت‌ها (1-65535)
-  # -T4: سرعت تهاجمی
-  # -v: نمایش جزئیات
-  # -oA: خروجی همه فرمت‌ها
-
-# کشف دستگاه‌های شبکه
-nmap -sn 192.168.1.0/24
-
-# سپس اسکن کامل مهم‌ترین دستگاه
-sudo nmap -sS -sV -sC -O 192.168.1.1
-
-# اسکن پورت‌های وب
-nmap -p 80,443,8080,8443 --script http-enum,http-security-headers 192.168.1.1
-
-# تست SSL/TLS
-nmap -p 443 --script ssl-enum-ciphers,ssl-cert 192.168.1.1
-
-#اسکن با اجتناب از تشخیص
-sudo nmap -f -D RND:5 --data-length 50 --ttl 128 \
-  --spoof-mac 0 --badsum -sS -sV \
-  --scan-delay 2s -T2 -oN stealth_scan 192.168.1.1
-
-# اسکن موازی
-nmap -sS -p 80 192.168.1.0/24 --max-hostgroup 10 --max-parallelism 10
-
-# اسکن با حفظ منابع
-nmap -T2 --max-rate 100 192.168.1.0/24
-
-
-# نمایش پکت‌های ارسالی
-nmap --packet-trace 192.168.1.1
-
-# نمایش دلیل بسته بودن پورت
-nmap --reason 192.168.1.1
-
-# تست DNS
-nmap -sL --dns-servers 8.8.8.8 192.168.1.1
-
-
-#بررسی امنیتی
-# SSH
-nmap --script ssh2-enum-algos 192.168.1.1
-nmap --script ssh-auth-methods 192.168.1.1
-
-# FTP
-nmap --script ftp-anon,ftp-bounce 192.168.1.1
-
-# SMB
-nmap --script smb-vuln-ms17-010 192.168.1.1
-
-
-#جمع‌آوری اطلاعات
-nmap --script dns-brute example.com
-nmap --script http-robots.txt 192.168.1.1
-nmap --script whois-ip 8.8.8.8
-
-#شناسایی آسیب‌پذیری:
-nmap --script vuln 192.168.1.1
-nmap --script exploit 192.168.1.1
-
-# اسکن دوره‌ای
-while true; do
-  nmap -sn 192.168.1.0/24 -oG - | grep "Status: Up" >> network_log.txt
-  date >> network_log.txt
-  sleep 300  # هر 5 دقیقه
-done
-]

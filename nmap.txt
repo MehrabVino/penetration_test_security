@@ -1,0 +1,76 @@
+Nmap Tool :
+[ 
+  # اسکن کامل با تمام قابلیت‌ها
+
+  sudo nmap -sS -sV -sC -O -p- -T4 -v -oA full_scan 192.168.1.100
+  # -sS: SYN Stealth Scan
+  # -sV: شناسایی سرویس/نسخه
+  # -sC: اجرای اسکریپت‌های پیش‌فرض
+  # -O: شناسایی سیستم عامل
+  # -p-: همه پورت‌ها (1-65535)
+  # -T4: سرعت تهاجمی
+  # -v: نمایش جزئیات
+  # -oA: خروجی همه فرمت‌ها
+
+# کشف دستگاه‌های شبکه
+nmap -sn 192.168.1.0/24
+
+# سپس اسکن کامل مهم‌ترین دستگاه
+sudo nmap -sS -sV -sC -O 192.168.1.1
+
+# اسکن پورت‌های وب
+nmap -p 80,443,8080,8443 --script http-enum,http-security-headers 192.168.1.1
+
+# تست SSL/TLS
+nmap -p 443 --script ssl-enum-ciphers,ssl-cert 192.168.1.1
+
+#اسکن با اجتناب از تشخیص
+sudo nmap -f -D RND:5 --data-length 50 --ttl 128 \
+  --spoof-mac 0 --badsum -sS -sV \
+  --scan-delay 2s -T2 -oN stealth_scan 192.168.1.1
+
+# اسکن موازی
+nmap -sS -p 80 192.168.1.0/24 --max-hostgroup 10 --max-parallelism 10
+
+# اسکن با حفظ منابع
+nmap -T2 --max-rate 100 192.168.1.0/24
+
+
+# نمایش پکت‌های ارسالی
+nmap --packet-trace 192.168.1.1
+
+# نمایش دلیل بسته بودن پورت
+nmap --reason 192.168.1.1
+
+# تست DNS
+nmap -sL --dns-servers 8.8.8.8 192.168.1.1
+
+
+#بررسی امنیتی
+# SSH
+nmap --script ssh2-enum-algos 192.168.1.1
+nmap --script ssh-auth-methods 192.168.1.1
+
+# FTP
+nmap --script ftp-anon,ftp-bounce 192.168.1.1
+
+# SMB
+nmap --script smb-vuln-ms17-010 192.168.1.1
+
+
+#جمع‌آوری اطلاعات
+nmap --script dns-brute example.com
+nmap --script http-robots.txt 192.168.1.1
+nmap --script whois-ip 8.8.8.8
+
+#شناسایی آسیب‌پذیری:
+nmap --script vuln 192.168.1.1
+nmap --script exploit 192.168.1.1
+
+# اسکن دوره‌ای
+while true; do
+  nmap -sn 192.168.1.0/24 -oG - | grep "Status: Up" >> network_log.txt
+  date >> network_log.txt
+  sleep 300  # هر 5 دقیقه
+done
+]
