@@ -1,0 +1,71 @@
+Mobile & IoT Penetration Testing Guide
+
+TABLE OF CONTENTS : [
+	Mobile Device Penetration Testing {
+	        Android Testing
+	        iOS Testing
+	        Data Extraction Methods
+	        Network Analysis
+	}
+
+	IoT Device Penetration Testing {
+		IP Cameras
+		Drones/Aircraft
+		Smart Home Devices
+		General IoT
+		}
+    
+]   
+
+Mobile Device PT :[
+	Android {
+		ADB (Android Debug Bridge) => "file adb.sh"
+		Root Access Explotation => "file root_access.sh"
+		Malicious App Creation => "MaliciousAppCreation.java"
+	}
+	IOS {
+		Jailbroken Device Access => "JailbrokenDeviceAccess.sh"
+		Non-Jailbroken Techniques => "non_Jailbroken.sh"
+	}
+	NETWORK ANALYSIS {
+		Intercepting Mobile Traffic => "intercepting_mobile_traffic.sh"
+	}
+] 
+
+IOT PT : [
+	 IP CAMERA TESTING => {
+	 	Initial Reconnaissance => "InitialReconnaissance.sh"
+	 	Default Credential Testing => "DefaultCredentialTesting.py"
+	 	ONVIF Protocol Testing => "ONVIFProtocolTesting.py"
+	 	Firmware Analysis => "FirmwareAnalysis.sh"
+	 }
+	 
+	 DRONE/AIRCRAFT TESTING => {
+	 	Network Discovery => "NetworkDiscovery.sh"
+	 	MAVLink Protocol Analysis => "MAVLinkProtocolAnalysis.py"
+	 	Drone Command Injection => "drone_command.py"
+	 	Mobile App Analysis (Drone Controller) => "MobileAppAnalysis(Drone Controller).sh"
+	 	
+	 }
+	 SMART HOME DEVICES => {
+	 	Zigbee/Z-Wave Testing => "Zigbee_Z-WaveTesting.sh"
+	 	MQTT Protocol Testing => "mqtt_exploit.py"
+	 	Physical Access Exploitation => "PhysicalAccessExploitation.sh"
+	 	
+	 }
+	 GENERAL IoT TESTING METHODOLOGY => general_iot_method.sh
+
+]
+
+
+Quick Commands:[
+
+	Mobile => "quick_mobile.sh"
+	IOT => "quick_iot.sh"
+
+]
+
+
+
+    
+    
